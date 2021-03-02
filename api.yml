@@ -1,0 +1,45 @@
+# kubernetes LoadBalancer Service
+# Enables the pods in a deployment to be accessible from outside the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: prime-fct-api-svc
+spec:
+  selector:
+    app: prime-fct-api
+  ports:
+    - protocol: "TCP"
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
+
+---
+# prime-fct-api Deployment
+# Defines the deployment of the app running in a pod on any worker node
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prime-fct-api
+  labels:
+    app: prime-fct-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prime-fct-api
+  template:
+    metadata:
+      labels:
+        app: prime-fct-api
+    spec:
+      containers:
+        - name: prime-fct-api
+          image: prime_factor_fastapi:1.0.0 # be sure to add to minikube env via eval  $(minikube -p minikube docker-env) 
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: IfNotPresent
+          resources:
+            # You must specify requests for CPU to autoscale
+            # based on CPU utilization
+            requests:
+              cpu: "250m"
