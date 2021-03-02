@@ -1,6 +1,4 @@
 # Fast API with locust and k8s autoscaling
-### Inspired by iwpnd blog and R.Thomas article
-
 ## Run api as is
 - install requirements, prefereably in venv
 ```
@@ -26,3 +24,5 @@
 - go to that "new" ip ip:8080/docs
 
 - kk apply -f autoscale.yml (to load test later in cloud)
+
+### Inspired by iwpnd blog and R.Thomas article
